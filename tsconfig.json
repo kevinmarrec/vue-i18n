@@ -1,0 +1,10 @@
+{
+  "extends": "@kevinmarrec/tsconfig",
+  "compilerOptions": {
+    "lib": ["ESNext", "DOM"]
+  },
+  "exclude": [
+    "**/coverage/**",
+    "**/dist/**"
+  ]
+}
