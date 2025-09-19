@@ -1,7 +1,7 @@
 {
   "name": "@kevinmarrec/vue-i18n",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "packageManager": "bun@1.2.22",
   "description": "Opinionated Internationalization (i18n) Vue plugin.",
   "author": "Kevin Marrec <kevin@marrec.io>",
