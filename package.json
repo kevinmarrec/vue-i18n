@@ -2,7 +2,7 @@
   "name": "@kevinmarrec/vue-i18n",
   "type": "module",
   "version": "1.0.0",
-  "packageManager": "bun@1.2.21",
+  "packageManager": "bun@1.2.22",
   "description": "Opinionated Internationalization (i18n) Vue plugin.",
   "author": "Kevin Marrec <kevin@marrec.io>",
   "license": "MIT",
@@ -45,17 +45,17 @@
     "vue": ">=3.5.0"
   },
   "devDependencies": {
-    "@kevinmarrec/eslint-config": "^1.0.0",
-    "@kevinmarrec/tsconfig": "^1.0.0",
-    "@types/bun": "^1.2.21",
+    "@kevinmarrec/eslint-config": "^1.4.0",
+    "@kevinmarrec/tsconfig": "^1.1.0",
+    "@types/bun": "^1.2.22",
     "@vitest/coverage-v8": "^3.2.4",
     "@vue/test-utils": "^2.4.6",
     "bumpp": "^10.2.3",
-    "eslint": "^9.34.0",
+    "eslint": "^9.36.0",
     "happy-dom": "^18.0.1",
-    "knip": "^5.63.0",
-    "taze": "^19.4.0",
-    "tsdown": "^0.14.2",
+    "knip": "^5.63.1",
+    "taze": "^19.7.0",
+    "tsdown": "^0.15.2",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
   }
