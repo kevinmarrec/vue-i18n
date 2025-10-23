@@ -39,7 +39,7 @@
     "lint:inspect": "bunx @eslint/config-inspector",
     "release": "bumpp",
     "test": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest --coverage"
   },
   "peerDependencies": {
     "vue": ">=3.5.0"
