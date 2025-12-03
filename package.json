@@ -30,7 +30,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsdown",
+    "build": "tsdown --no-fixed-extension",
     "check": "bun run check:unused && bun run check:eslint && bun run check:types",
     "check:eslint": "eslint . --cache",
     "check:types": "tsc --noEmit",
