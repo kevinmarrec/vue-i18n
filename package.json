@@ -20,17 +20,16 @@
     "vue-plugin"
   ],
   "exports": {
-    ".": {
-      "import": "./dist/index.js"
-    }
+    ".": "./dist/index.mjs"
   },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsdown --no-fixed-extension",
+    "build": "tsdown",
     "check": "bun run check:unused && bun run check:eslint && bun run check:types",
     "check:eslint": "eslint . --cache",
     "check:types": "tsc --noEmit",
