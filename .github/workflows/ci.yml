@@ -16,7 +16,7 @@ jobs:
       !startsWith(github.event.head_commit.message, 'chore: release')
     steps:
       - name: Setup Bun
-        uses: kevinmarrec/workflows/setup-bun@952a9c0dbc673a0cf2c7329cf242df2b66b4686d # main
+        uses: kevinmarrec/workflows/setup-bun@2d5977c835760da5aea58436b202482e162b7cfd # main
 
       - name: Check unused files, dependencies, and exports
         run: bun run check:unused
