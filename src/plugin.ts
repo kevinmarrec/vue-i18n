@@ -6,10 +6,12 @@ import type { ResolvedVueI18nOptions, VueI18nOptions } from './types'
 
 type VueI18nPlugin = FunctionPlugin
 
+const LOCALE_KEY_RE = /(\w*)\.(ya?ml|json)$/
+
 function resolveMessages(input: VueI18nOptions['messages']) {
   const output = {} as ResolvedVueI18nOptions['messages']
   for (const key in input) {
-    output[key.match(/(\w*)\.(ya?ml|json)$/)?.[1] ?? key] = input[key]
+    output[key.match(LOCALE_KEY_RE)?.[1] ?? key] = input[key]
   }
   return output
 }
