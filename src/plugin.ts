@@ -4,8 +4,6 @@ import { injectionKey } from './constants'
 import { createInstance } from './instance'
 import type { ResolvedVueI18nOptions, VueI18nOptions } from './types'
 
-type VueI18nPlugin = FunctionPlugin
-
 const LOCALE_KEY_RE = /(\w*)\.(ya?ml|json)$/
 
 function resolveMessages(input: VueI18nOptions['messages']) {
@@ -16,7 +14,7 @@ function resolveMessages(input: VueI18nOptions['messages']) {
   return output
 }
 
-export async function createI18n(options: VueI18nOptions): Promise<VueI18nPlugin> {
+export async function createI18n(options: VueI18nOptions): Promise<FunctionPlugin> {
   const resolvedOptions: ResolvedVueI18nOptions = {
     locale: options.locale ?? 'en',
     fallbackLocale: options.fallbackLocale ?? options.locale ?? 'en',

@@ -35,8 +35,10 @@ export function createInstance(options: ResolvedVueI18nOptions): VueI18nInstance
   }
 
   const findLocaleMessage = (locale: string, key: string) =>
-    key.split('.').reduce<LocaleMessageValue | undefined>((path, segment) =>
-      (path as LocaleMessageDictionary | undefined)?.[segment], messages.value[locale])
+    key.includes('.')
+      ? key.split('.').reduce<LocaleMessageValue | undefined>((path, segment) =>
+        (path as LocaleMessageDictionary | undefined)?.[segment], messages.value[locale])
+      : messages.value[locale]?.[key]
 
   watch(locale, loadMessages)
 
@@ -55,13 +57,12 @@ export function createInstance(options: ResolvedVueI18nOptions): VueI18nInstance
       if (typeof message !== 'string')
         return key
 
-      const values: { [key: string]: string | number } = {
-        ...params[0],
-        ...params[1],
-      }
+      if (!params.length && !message.includes('|') && !message.includes('{'))
+        return message
 
-      if (typeof params[0] === 'number')
-        Object.assign(values, { count: params[0], n: params[0] })
+      const values: { [key: string]: string | number } = typeof params[0] === 'number'
+        ? { count: params[0], n: params[0], ...params[1] }
+        : { ...params[0] }
 
       if (message.includes('|')) {
         const count = [values.count, values.n].find(x => typeof x === 'number') ?? 1
