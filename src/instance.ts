@@ -37,7 +37,7 @@ export function createInstance(options: ResolvedVueI18nOptions): VueI18nInstance
   const findLocaleMessage = (locale: string, key: string) =>
     key.includes('.')
       ? key.split('.').reduce<LocaleMessageValue | undefined>((path, segment) =>
-        (path as LocaleMessageDictionary | undefined)?.[segment], messages.value[locale])
+          (path as LocaleMessageDictionary | undefined)?.[segment], messages.value[locale])
       : messages.value[locale]?.[key]
 
   watch(locale, loadMessages)
