@@ -79,6 +79,21 @@ describe('composable', () => {
   })
 
   describe('translation behaviors', () => {
+    it('nested key', async () => {
+      const wrapper = await render({
+        messages: {
+          en: {
+            greetings: {
+              welcome: 'Welcome!',
+            },
+          },
+        },
+        template: t => t('greetings.welcome'),
+      })
+
+      expect(wrapper.text()).toBe('Welcome!')
+    })
+
     it('named interpolation', async () => {
       const wrapper = await render({
         messages: {
