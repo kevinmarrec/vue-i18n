@@ -55,7 +55,7 @@
     "knip": "^6.0.4",
     "taze": "^19.10.0",
     "tsdown": "^0.21.2",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.2",
     "vitest": "^4.1.0"
   }
 }
