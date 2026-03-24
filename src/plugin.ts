@@ -1,4 +1,3 @@
-/// <reference types="vite/client" />
 import type { FunctionPlugin } from 'vue'
 
 import { injectionKey } from './constants'
