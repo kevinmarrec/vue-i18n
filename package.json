@@ -30,12 +30,11 @@
   ],
   "scripts": {
     "build": "tsdown",
-    "check": "bun run check:unused && bun run check:eslint && bun run check:types",
-    "check:eslint": "eslint . --cache",
-    "check:types": "tsc --noEmit",
-    "check:unused": "knip -n",
-    "lint": "bun run check:eslint",
+    "check": "bun run lint && bun run knip && bun run typecheck",
+    "knip": "knip -n",
+    "lint": "eslint . --cache",
     "lint:inspect": "bunx @eslint/config-inspector",
+    "typecheck": "tsc --noEmit",
     "release": "bumpp",
     "test": "vitest",
     "test:coverage": "vitest --coverage"
