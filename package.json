@@ -44,18 +44,18 @@
     "vue": ">=3.5.0"
   },
   "devDependencies": {
-    "@kevinmarrec/eslint-config": "^1.16.0",
-    "@kevinmarrec/tsconfig": "^1.16.0",
-    "@types/bun": "^1.3.12",
-    "@vitest/coverage-v8": "^4.1.4",
-    "@vue/test-utils": "^2.4.6",
+    "@kevinmarrec/eslint-config": "^1.17.0",
+    "@kevinmarrec/tsconfig": "^1.17.0",
+    "@types/bun": "^1.3.13",
+    "@vitest/coverage-v8": "^4.1.5",
+    "@vue/test-utils": "^2.4.8",
     "bumpp": "^11.0.1",
     "eslint": "^10.2.1",
     "happy-dom": "^20.9.0",
-    "knip": "^6.4.1",
+    "knip": "^6.7.0",
     "taze": "^19.11.0",
-    "tsdown": "^0.21.9",
+    "tsdown": "^0.21.10",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.4"
+    "vitest": "^4.1.5"
   }
 }
