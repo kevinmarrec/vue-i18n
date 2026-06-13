@@ -16,7 +16,7 @@ jobs:
       !startsWith(github.event.head_commit.message, 'chore: release')
     steps:
       - name: Setup Bun
-        uses: kevinmarrec/workflows/setup-bun@dab610215dc6062d22bbfced07ba3ee4fcb72132 # main
+        uses: kevinmarrec/workflows/setup-bun@0dd5725d61c37c9c5fc8e78961ec8b22e6eeb426 # main
 
       - name: Lint
         run: bun run lint
