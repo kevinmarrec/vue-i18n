@@ -47,15 +47,15 @@
     "@kevinmarrec/eslint-config": "^1.19.0",
     "@kevinmarrec/tsconfig": "^1.19.0",
     "@types/bun": "^1.3.14",
-    "@vitest/coverage-v8": "^4.1.9",
+    "@vitest/coverage-v8": "^4.1.10",
     "@vue/test-utils": "^2.4.11",
     "bumpp": "^11.1.0",
-    "eslint": "^10.6.0",
+    "eslint": "^10.7.0",
     "happy-dom": "^20.10.6",
-    "knip": "^6.24.0",
+    "knip": "^6.26.0",
     "taze": "^19.14.1",
-    "tsdown": "^0.22.3",
+    "tsdown": "^0.22.5",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.9"
+    "vitest": "^4.1.10"
   }
 }
