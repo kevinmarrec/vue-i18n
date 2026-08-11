@@ -33,13 +33,10 @@ export function defineI18n(options: DefineI18nOptions = {}): I18n {
     detectLocale: () => {
       const preferred = navigator.languages?.length ? navigator.languages : [navigator.language]
 
-      for (const tag of preferred) {
-        // Exact tag first (`pt-BR`), then its language subtag (`pt`).
-        const match = [tag, tag.split('-')[0]].find(candidate => locales.includes(candidate))
-        if (match) return match
-      }
+      // Each tag is tried in full (`fr-CA`) before its language subtag (`fr`), in preference order.
+      const candidates = preferred.flatMap(tag => [tag, tag.split('-')[0]])
 
-      return defaultLocale
+      return candidates.find(candidate => locales.includes(candidate)) ?? defaultLocale
     },
     install: async (locale) => {
       const instance = await createInstance({ locale, fallbackLocale: defaultLocale, messages })
