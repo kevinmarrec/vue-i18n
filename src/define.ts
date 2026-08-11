@@ -2,7 +2,7 @@ import { injectionKey } from './constants'
 import { createInstance } from './instance'
 import type { DefineI18nOptions, I18n, ResolvedLocaleMessages } from './types'
 
-const LOCALE_KEY_RE = /(\w+)\.(?:ya?ml|json)$/
+const LOCALE_KEY_RE = /([\w-]+)\.(?:ya?ml|json)$/
 
 function resolveMessages(input: DefineI18nOptions['messages'] = {}): ResolvedLocaleMessages {
   const output: ResolvedLocaleMessages = {}
@@ -31,8 +31,15 @@ export function defineI18n(options: DefineI18nOptions = {}): I18n {
     },
     localizePath: (pathname, locale) => locale === defaultLocale ? pathname : `/${locale}${pathname}`,
     detectLocale: () => {
-      const locale = navigator.language.slice(0, 2)
-      return locales.includes(locale) ? locale : defaultLocale
+      const preferred = navigator.languages?.length ? navigator.languages : [navigator.language]
+
+      for (const tag of preferred) {
+        // Exact tag first (`pt-BR`), then its language subtag (`pt`).
+        const match = [tag, tag.split('-')[0]].find(candidate => locales.includes(candidate))
+        if (match) return match
+      }
+
+      return defaultLocale
     },
     install: async (locale) => {
       const instance = await createInstance({ locale, fallbackLocale: defaultLocale, messages })
