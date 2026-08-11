@@ -40,7 +40,6 @@
     "test:coverage": "vitest --coverage"
   },
   "peerDependencies": {
-    "vite": ">=7.0.0",
     "vue": ">=3.5.0"
   },
   "devDependencies": {
