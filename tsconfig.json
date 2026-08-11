@@ -1,8 +1,7 @@
 {
   "extends": "@kevinmarrec/tsconfig",
   "compilerOptions": {
-    "lib": ["ESNext", "DOM"],
-    "types": ["vite/client"]
+    "lib": ["ESNext", "DOM"]
   },
   "exclude": [
     "**/coverage/**",
