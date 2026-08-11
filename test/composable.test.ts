@@ -2,8 +2,11 @@
  * @vitest-environment happy-dom
  */
 
+import { mount } from '@vue/test-utils'
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { defineComponent } from 'vue'
 
+import { useI18n } from '../src'
 import { render } from './utils'
 
 afterEach(() => {
@@ -14,7 +17,7 @@ afterEach(() => {
 describe('composable', () => {
   describe('locale behaviors', () => {
     it('default locale', async () => {
-      const wrapper = await render({
+      const { wrapper } = await render({
         messages: {
           './locales/en.json': () => Promise.resolve({
             default: {
@@ -25,43 +28,17 @@ describe('composable', () => {
         template: t => t('welcome'),
       })
 
-      await vi.waitFor(() => {
-        expect(wrapper.text()).toBe('Welcome !')
-      })
-    })
-
-    it('navigator language', async () => {
-      vi.stubGlobal('navigator', {
-        language: 'fr-FR',
-      })
-
-      const wrapper = await render({
-        messages: {
-          en: {
-            welcome: 'Welcome!',
-          },
-          fr: {
-            welcome: 'Bienvenue !',
-          },
-        },
-        template: t => t('welcome'),
-      })
-
-      await vi.waitFor(() => {
-        expect(wrapper.text()).toBe('Bienvenue !')
-      })
+      expect(wrapper.text()).toBe('Welcome !')
     })
 
     it('fallback locale (when translation not found)', async () => {
-      vi.stubGlobal('navigator', {
-        language: 'fr-FR',
-      })
-
-      const wrapper = await render({
+      const { wrapper } = await render({
+        locale: 'fr',
         messages: {
           en: {
             welcome: 'Welcome!',
           },
+          fr: {},
         },
         template: t => t('welcome'),
       })
@@ -70,7 +47,7 @@ describe('composable', () => {
     })
 
     it('raw key (when fallback translation also not found)', async () => {
-      const wrapper = await render({
+      const { wrapper } = await render({
         template: t => t('welcome'),
       })
 
@@ -80,7 +57,7 @@ describe('composable', () => {
 
   describe('translation behaviors', () => {
     it('nested key', async () => {
-      const wrapper = await render({
+      const { wrapper } = await render({
         messages: {
           en: {
             greetings: {
@@ -95,7 +72,7 @@ describe('composable', () => {
     })
 
     it('named interpolation', async () => {
-      const wrapper = await render({
+      const { wrapper } = await render({
         messages: {
           en: {
             welcome: 'Welcome, {name}!',
@@ -104,13 +81,11 @@ describe('composable', () => {
         template: t => t('welcome', { name: 'John' }),
       })
 
-      await vi.waitFor(() => {
-        expect(wrapper.text()).toBe('Welcome, John!')
-      })
+      expect(wrapper.text()).toBe('Welcome, John!')
     })
 
     it('named interpolation (when value is not provided)', async () => {
-      const wrapper = await render({
+      const { wrapper } = await render({
         template: t => t('message'),
         messages: {
           en: {
@@ -123,7 +98,7 @@ describe('composable', () => {
     })
 
     it('list interpolation', async () => {
-      const wrapper = await render({
+      const { wrapper } = await render({
         messages: {
           en: {
             welcome: 'Welcome, {0} {1}!',
@@ -132,13 +107,11 @@ describe('composable', () => {
         template: t => t('welcome', ['John', 'Doe']),
       })
 
-      await vi.waitFor(() => {
-        expect(wrapper.text()).toBe('Welcome, John Doe!')
-      })
+      expect(wrapper.text()).toBe('Welcome, John Doe!')
     })
 
     it('pluralization', async () => {
-      const wrapper = await render({
+      const { wrapper } = await render({
         messages: {
           en: {
             cars: 'car | cars',
@@ -170,9 +143,10 @@ describe('composable', () => {
     })
   })
 
-  it('should throw error when plugin has not been installed', async () => {
+  it('should throw error when plugin has not been installed', () => {
     vi.spyOn(console, 'warn').mockImplementation(() => {})
 
-    expect(render()).rejects.toThrowError('Plugin has not been installed')
+    expect(() => mount(defineComponent({ setup: () => useI18n() })))
+      .toThrow('Plugin has not been installed')
   })
 })
