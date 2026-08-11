@@ -85,14 +85,57 @@ describe('defineI18n', () => {
     })
   })
 
+  describe('locale tags with a region subtag', () => {
+    const regional = {
+      './locales/en.yml': () => Promise.resolve({ default: { welcome: 'Welcome !' } }),
+      './locales/pt-BR.yml': () => Promise.resolve({ default: { welcome: 'Bem-vindo !' } }),
+      './locales/zh-Hans.json': () => Promise.resolve({ default: { welcome: '欢迎 !' } }),
+    }
+
+    it('keeps the full tag as the locale', () => {
+      expect(defineI18n({ messages: regional }).locales).toEqual(['en', 'pt-BR', 'zh-Hans'])
+    })
+
+    it('extracts a region-qualified prefix', () => {
+      const { extractLocale } = defineI18n({ messages: regional })
+      expect(extractLocale('/pt-BR/foo')).toEqual({ locale: 'pt-BR', pathname: '/foo' })
+      expect(extractLocale('/zh-Hans/')).toEqual({ locale: 'zh-Hans', pathname: '/' })
+    })
+
+    it('localizes with a region-qualified locale', () => {
+      const { localizePath } = defineI18n({ messages: regional })
+      expect(localizePath('/foo', 'pt-BR')).toBe('/pt-BR/foo')
+    })
+
+    it('loads the messages of a region-qualified locale', async () => {
+      const { wrapper } = await render({ messages: regional, locale: 'pt-BR', template: t => t('welcome') })
+      expect(wrapper.text()).toBe('Bem-vindo !')
+    })
+  })
+
   describe('detectLocale', () => {
-    it('returns a navigator locale that is available', () => {
+    it('prefers an exact tag match', () => {
+      vi.stubGlobal('navigator', { languages: ['pt-BR', 'en'] })
+      expect(defineI18n({ messages: { 'pt-BR': {}, 'pt': {}, 'en': {} } }).detectLocale()).toBe('pt-BR')
+    })
+
+    it('falls back to the language subtag', () => {
+      vi.stubGlobal('navigator', { languages: ['fr-CA'] })
+      expect(defineI18n({ messages }).detectLocale()).toBe('fr')
+    })
+
+    it('honours the order of navigator.languages', () => {
+      vi.stubGlobal('navigator', { languages: ['de-DE', 'fr-FR', 'en-GB'] })
+      expect(defineI18n({ messages }).detectLocale()).toBe('fr')
+    })
+
+    it('falls back to navigator.language when languages is unavailable', () => {
       vi.stubGlobal('navigator', { language: 'fr-FR' })
       expect(defineI18n({ messages }).detectLocale()).toBe('fr')
     })
 
-    it('returns the default locale when the navigator locale is unavailable', () => {
-      vi.stubGlobal('navigator', { language: 'de-DE' })
+    it('returns the default locale when nothing matches', () => {
+      vi.stubGlobal('navigator', { languages: ['de-DE', 'it-IT'] })
       expect(defineI18n({ messages }).detectLocale()).toBe('en')
     })
   })

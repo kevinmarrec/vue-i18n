@@ -53,6 +53,23 @@ describe('composable', () => {
 
       expect(wrapper.text()).toBe('welcome')
     })
+
+    it('empty translation (honoured instead of falling back)', async () => {
+      const { wrapper } = await render({
+        locale: 'fr',
+        messages: {
+          en: {
+            legalNotice: 'Terms apply.',
+          },
+          fr: {
+            legalNotice: '',
+          },
+        },
+        template: t => t('legalNotice'),
+      })
+
+      expect(wrapper.text()).toBe('')
+    })
   })
 
   describe('translation behaviors', () => {
@@ -108,6 +125,30 @@ describe('composable', () => {
       })
 
       expect(wrapper.text()).toBe('Welcome, John Doe!')
+    })
+
+    it('pluralization (fractional count takes the plural form)', async () => {
+      const { wrapper } = await render({
+        messages: {
+          en: {
+            cars: 'car | cars',
+            apples: 'no apples | one apple | {count} apples',
+          },
+        },
+        template: t => [
+          t('cars', 1.5),
+          t('cars', 0.5),
+          t('apples', 1.5),
+          t('apples', 0.5),
+        ].join('\n'),
+      })
+
+      expect(wrapper.text()).toBe([
+        'cars',
+        'cars',
+        '1.5 apples',
+        '0.5 apples',
+      ].join('\n'))
     })
 
     it('pluralization', async () => {

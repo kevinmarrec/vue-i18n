@@ -55,7 +55,8 @@ export async function createInstance(options: ResolvedOptions): Promise<VueI18nI
       locale.value = next
     },
     t: (key, ...params: any[]) => {
-      let message = findLocaleMessage(locale.value, key) || findLocaleMessage(options.fallbackLocale, key)
+      // `??`, not `||`: an empty translation is a deliberate one, not a missing one.
+      let message = findLocaleMessage(locale.value, key) ?? findLocaleMessage(options.fallbackLocale, key)
 
       if (typeof message !== 'string')
         return key
@@ -69,7 +70,8 @@ export async function createInstance(options: ResolvedOptions): Promise<VueI18nI
 
       if (message.includes('|')) {
         const count = [values.count, values.n].find(x => typeof x === 'number') ?? 1
-        const clamped = Math.min(Math.abs(count), 2) // Clamp between 0 and 2
+        // Clamped between 0 and 2. Only exactly 1 is singular, so a fractional count is plural.
+        const clamped = Number.isInteger(count) ? Math.min(Math.abs(count), 2) : 2
         const parts = message.split(PLURAL_SEPARATOR_RE)
         const rules = parts.length > 2 ? [0, 1, 2] : [1, 0, 1] // (no apple | one apple | many apples) VS (car | cars)
         message = parts[rules[clamped]]

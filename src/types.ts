@@ -39,7 +39,12 @@ export interface I18n {
   defaultLocale: string
   /** `/fr/foo` → `{ locale: 'fr', pathname: '/foo' }`. Inverse of {@link I18n.localizePath}. */
   extractLocale: (pathname: string) => { locale: string, pathname: string }
-  /** `('/foo', 'fr')` → `/fr/foo`. The default locale stays unprefixed. */
+  /**
+   * `('/foo', 'fr')` → `/fr/foo`. The default locale stays unprefixed.
+   *
+   * `pathname` must be unprefixed — this prepends unconditionally, so passing an already-localized
+   * path yields `/de/fr/foo`. Pass what {@link I18n.extractLocale} returned, not the raw URL.
+   */
   localizePath: (pathname: string, locale: string) => string
   /**
    * Locale matching `navigator.language`, or {@link I18n.defaultLocale}.

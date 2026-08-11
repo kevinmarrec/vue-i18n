@@ -12,7 +12,11 @@ Opinionated [Internationalization (i18n)](https://developer.mozilla.org/en-US/do
 
 - Locale is an explicit input, never sniffed behind your back
   - You pass the locale to `install()`, so server and client can agree on it
-  - `detectLocale()` is available when you _want_ `navigator.language`, and is opt-in
+  - `detectLocale()` is available when you _want_ the browser's preferences, and is opt-in
+
+- Locale tags, with or without a region subtag
+  - `en.yml`, `pt-BR.yml` and `zh-Hans.json` all keep their full tag as the locale
+  - `detectLocale()` matches the exact tag first, then its language subtag
 
 - URL-prefix helpers for localized routing
   - The default locale serves unprefixed; every other locale gets a `/<locale>` prefix
@@ -21,6 +25,7 @@ Opinionated [Internationalization (i18n)](https://developer.mozilla.org/en-US/do
 
 - Fallbacking
   - The default locale doubles as the fallback locale
+  - An empty translation is honoured, not treated as missing
   - If the fallback locale also lacks the translation, the key is returned as is
 
 - Message Format features
@@ -42,6 +47,7 @@ Opinionated [Internationalization (i18n)](https://developer.mozilla.org/en-US/do
     - `no apples | one apple | {count} apples` + `t('key', 0)` = `no apples`
     - `no apples | one apple | {count} apples` + `t('key', 1)` = `one apple`
     - `no apples | one apple | {count} apples` + `t('key', 2)` = `2 apples`
+    - Only exactly `1` is singular, so a fractional count is plural: `t('key', 1.5)` = `1.5 apples`
 
 - Supports Server-Side Rendering (SSR) & Static Site Generation (SSG) without hydration mismatches
 
@@ -60,14 +66,14 @@ export const i18n = defineI18n({
 })
 ```
 
-| Member                           | Description                                                              |
-| -------------------------------- | ------------------------------------------------------------------------ |
-| `locales`                        | Locale codes derived from the message keys, e.g. `['en', 'fr']`          |
-| `defaultLocale`                  | Served unprefixed, and used as the fallback locale                       |
-| `extractLocale(pathname)`        | `/fr/foo` → `{ locale: 'fr', pathname: '/foo' }`                         |
-| `localizePath(pathname, locale)` | `('/foo', 'fr')` → `/fr/foo`; the default locale stays unprefixed        |
-| `detectLocale()`                 | Locale matching `navigator.language`, else `defaultLocale`. Browser-only |
-| `install(locale)`                | Resolves to the Vue plugin, with the locale's messages already loaded    |
+| Member                           | Description                                                               |
+| -------------------------------- | ------------------------------------------------------------------------- |
+| `locales`                        | Locale codes derived from the message keys, e.g. `['en', 'fr']`           |
+| `defaultLocale`                  | Served unprefixed, and used as the fallback locale                        |
+| `extractLocale(pathname)`        | `/fr/foo` → `{ locale: 'fr', pathname: '/foo' }`                          |
+| `localizePath(pathname, locale)` | `('/foo', 'fr')` → `/fr/foo`; the default locale stays unprefixed         |
+| `detectLocale()`                 | Best match from `navigator.languages`, else `defaultLocale`. Browser-only |
+| `install(locale)`                | Resolves to the Vue plugin, with the locale's messages already loaded     |
 
 `install()` is asynchronous so that the base and fallback messages are loaded **before** the app
 renders. That is what lets a server-rendered or prerendered document and its hydration agree.
