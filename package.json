@@ -46,7 +46,7 @@
     "@kevinmarrec/eslint-config": "^1.22.0",
     "@kevinmarrec/tsconfig": "^1.22.0",
     "@types/bun": "^1.4.0",
-    "@vitest/coverage-v8": "^4.1.11",
+    "@vitest/coverage-v8": "^5.0.0",
     "@vue/test-utils": "^2.4.11",
     "bumpp": "^12.2.1",
     "eslint": "^10.9.0",
