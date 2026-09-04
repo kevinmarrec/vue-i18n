@@ -46,7 +46,7 @@
     "@kevinmarrec/eslint-config": "^1.22.0",
     "@kevinmarrec/tsconfig": "^1.22.0",
     "@types/bun": "^1.4.0",
-    "@vitest/coverage-v8": "^4.1.11",
+    "@vitest/coverage-v8": "^5.0.0",
     "@vue/test-utils": "^2.4.11",
     "bumpp": "^12.2.1",
     "eslint": "^10.9.0",
@@ -55,6 +55,6 @@
     "taze": "^21.1.0",
     "tsdown": "^0.22.14",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.11"
+    "vitest": "^5.0.0"
   }
 }
