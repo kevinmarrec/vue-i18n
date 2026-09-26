@@ -3,6 +3,7 @@ import { createInstance } from './instance'
 import type { DefineI18nOptions, I18n, ResolvedLocaleMessages } from './types'
 
 const LOCALE_KEY_RE = /([\w-]+)\.(?:ya?ml|json)$/
+const ROOT_RE = /^\/(?=[?#]|$)/
 
 function resolveMessages(input: DefineI18nOptions['messages'] = {}): ResolvedLocaleMessages {
   const output: ResolvedLocaleMessages = {}
@@ -18,6 +19,7 @@ export function defineI18n(options: DefineI18nOptions = {}): I18n {
   const defaultLocale = options.defaultLocale ?? 'en'
   const messages = resolveMessages(options.messages)
   const locales = Object.keys(messages)
+  const trailingSlash = options.trailingSlash ?? false
 
   return {
     locales,
@@ -29,7 +31,11 @@ export function defineI18n(options: DefineI18nOptions = {}): I18n {
         ? { locale: segment, pathname: `/${rest.join('/')}` }
         : { locale: defaultLocale, pathname }
     },
-    localizePath: (pathname, locale) => locale === defaultLocale ? pathname : `/${locale}${pathname}`,
+    localizePath: (pathname, locale) => {
+      if (locale === defaultLocale) return pathname
+
+      return `/${locale}${trailingSlash ? pathname : pathname.replace(ROOT_RE, '')}`
+    },
     detectLocale: () => {
       const preferred = navigator.languages?.length ? navigator.languages : [navigator.language]
 

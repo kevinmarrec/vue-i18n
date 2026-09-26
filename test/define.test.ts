@@ -66,7 +66,19 @@ describe('defineI18n', () => {
 
     it('prefixes a non-default locale', () => {
       expect(localizePath('/foo', 'fr')).toBe('/fr/foo')
+      expect(localizePath('/', 'fr')).toBe('/fr')
+    })
+
+    it('keeps the query and hash of the root path', () => {
+      expect(localizePath('/?foo=1', 'fr')).toBe('/fr?foo=1')
+      expect(localizePath('/#foo', 'fr')).toBe('/fr#foo')
+    })
+
+    it('keeps the root slash with trailingSlash', () => {
+      const { localizePath } = defineI18n({ messages, trailingSlash: true })
       expect(localizePath('/', 'fr')).toBe('/fr/')
+      expect(localizePath('/?foo=1', 'fr')).toBe('/fr/?foo=1')
+      expect(localizePath('/foo', 'fr')).toBe('/fr/foo')
     })
 
     it('leaves the default locale unprefixed', () => {

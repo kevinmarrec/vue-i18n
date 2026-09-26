@@ -25,6 +25,11 @@ export interface DefineI18nOptions {
    */
   defaultLocale?: string
   messages?: LocaleMessages | LazyLocaleMessages
+  /**
+   * Whether {@link I18n.localizePath} keeps the slash of the root path: `/fr/` rather than `/fr`.
+   * @default false
+   */
+  trailingSlash?: boolean
 }
 
 export interface ResolvedOptions {
@@ -40,7 +45,7 @@ export interface I18n {
   /** `/fr/foo` → `{ locale: 'fr', pathname: '/foo' }`. Inverse of {@link I18n.localizePath}. */
   extractLocale: (pathname: string) => { locale: string, pathname: string }
   /**
-   * `('/foo', 'fr')` → `/fr/foo`. The default locale stays unprefixed.
+   * `('/foo', 'fr')` → `/fr/foo`, `('/', 'fr')` → `/fr`. The default locale stays unprefixed.
    *
    * `pathname` must be unprefixed — this prepends unconditionally, so passing an already-localized
    * path yields `/de/fr/foo`. Pass what {@link I18n.extractLocale} returned, not the raw URL.

@@ -21,7 +21,7 @@ Opinionated [Internationalization (i18n)](https://developer.mozilla.org/en-US/do
 - URL-prefix helpers for localized routing
   - The default locale serves unprefixed; every other locale gets a `/<locale>` prefix
     - `/foo` ➡️ `/fr/foo`
-    - `/` ➡️ `/fr/`
+    - `/` ➡️ `/fr` (`/fr/` with `trailingSlash: true`)
 
 - Fallbacking
   - The default locale doubles as the fallback locale
