@@ -43,8 +43,8 @@
     "vue": ">=3.5.0"
   },
   "devDependencies": {
-    "@kevinmarrec/eslint-config": "^1.25.0",
-    "@kevinmarrec/tsconfig": "^1.25.0",
+    "@kevinmarrec/eslint-config": "^1.26.0",
+    "@kevinmarrec/tsconfig": "^1.26.0",
     "@types/bun": "^1.4.3",
     "@vitest/coverage-v8": "^5.0.5",
     "@vue/test-utils": "^2.5.1",
