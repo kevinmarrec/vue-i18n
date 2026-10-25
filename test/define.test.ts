@@ -12,8 +12,12 @@ afterEach(() => {
 })
 
 const messages = {
-  './locales/en.yml': () => Promise.resolve({ default: { welcome: 'Welcome !' } }),
-  './locales/fr.yml': () => Promise.resolve({ default: { welcome: 'Bienvenue !' } }),
+  './locales/en.yml': () => Promise.resolve({
+    default: { welcome: 'Welcome !' },
+  }),
+  './locales/fr.yml': () => Promise.resolve({
+    default: { welcome: 'Bienvenue !' },
+  }),
 }
 
 describe('defineI18n', () => {
@@ -99,9 +103,15 @@ describe('defineI18n', () => {
 
   describe('locale tags with a region subtag', () => {
     const regional = {
-      './locales/en.yml': () => Promise.resolve({ default: { welcome: 'Welcome !' } }),
-      './locales/pt-BR.yml': () => Promise.resolve({ default: { welcome: 'Bem-vindo !' } }),
-      './locales/zh-Hans.json': () => Promise.resolve({ default: { welcome: '欢迎 !' } }),
+      './locales/en.yml': () => Promise.resolve({
+        default: { welcome: 'Welcome !' },
+      }),
+      './locales/pt-BR.yml': () => Promise.resolve({
+        default: { welcome: 'Bem-vindo !' },
+      }),
+      './locales/zh-Hans.json': () => Promise.resolve({
+        default: { welcome: '欢迎 !' },
+      }),
     }
 
     it('keeps the full tag as the locale', () => {
@@ -120,24 +130,36 @@ describe('defineI18n', () => {
     })
 
     it('loads the messages of a region-qualified locale', async () => {
-      const { wrapper } = await render({ messages: regional, locale: 'pt-BR', template: t => t('welcome') })
+      const { wrapper } = await render({
+        messages: regional,
+        locale: 'pt-BR',
+        template: t => t('welcome'),
+      })
       expect(wrapper.text()).toBe('Bem-vindo !')
     })
   })
 
   describe('detectLocale', () => {
     it('prefers an exact tag match', () => {
-      vi.stubGlobal('navigator', { languages: ['pt-BR', 'en'] })
-      expect(defineI18n({ messages: { 'pt-BR': {}, 'pt': {}, 'en': {} } }).detectLocale()).toBe('pt-BR')
+      vi.stubGlobal('navigator', {
+        languages: ['pt-BR', 'en'],
+      })
+      expect(defineI18n({
+        messages: { 'pt-BR': {}, 'pt': {}, 'en': {} },
+      }).detectLocale()).toBe('pt-BR')
     })
 
     it('falls back to the language subtag', () => {
-      vi.stubGlobal('navigator', { languages: ['fr-CA'] })
+      vi.stubGlobal('navigator', {
+        languages: ['fr-CA'],
+      })
       expect(defineI18n({ messages }).detectLocale()).toBe('fr')
     })
 
     it('honours the order of navigator.languages', () => {
-      vi.stubGlobal('navigator', { languages: ['de-DE', 'fr-FR', 'en-GB'] })
+      vi.stubGlobal('navigator', {
+        languages: ['de-DE', 'fr-FR', 'en-GB'],
+      })
       expect(defineI18n({ messages }).detectLocale()).toBe('fr')
     })
 
@@ -147,7 +169,9 @@ describe('defineI18n', () => {
     })
 
     it('returns the default locale when nothing matches', () => {
-      vi.stubGlobal('navigator', { languages: ['de-DE', 'it-IT'] })
+      vi.stubGlobal('navigator', {
+        languages: ['de-DE', 'it-IT'],
+      })
       expect(defineI18n({ messages }).detectLocale()).toBe('en')
     })
   })
@@ -160,13 +184,21 @@ describe('defineI18n', () => {
     it('ignores the navigator locale', async () => {
       vi.stubGlobal('navigator', { language: 'fr-FR' })
 
-      const { wrapper } = await render({ messages, locale: 'en', template: t => t('welcome') })
+      const { wrapper } = await render({
+        messages,
+        locale: 'en',
+        template: t => t('welcome'),
+      })
 
       expect(wrapper.text()).toBe('Welcome !')
     })
 
     it('loads the requested locale', async () => {
-      const { wrapper } = await render({ messages, locale: 'fr', template: t => t('welcome') })
+      const { wrapper } = await render({
+        messages,
+        locale: 'fr',
+        template: t => t('welcome'),
+      })
 
       expect(wrapper.text()).toBe('Bienvenue !')
     })
@@ -175,8 +207,12 @@ describe('defineI18n', () => {
       const { wrapper } = await render({
         locale: 'fr',
         messages: {
-          './locales/en.yml': () => Promise.resolve({ default: { welcome: 'Welcome !', only: 'English only' } }),
-          './locales/fr.yml': () => Promise.resolve({ default: { welcome: 'Bienvenue !' } }),
+          './locales/en.yml': () => Promise.resolve({
+            default: { welcome: 'Welcome !', only: 'English only' },
+          }),
+          './locales/fr.yml': () => Promise.resolve({
+            default: { welcome: 'Bienvenue !' },
+          }),
         },
         template: t => t('only'),
       })
@@ -187,7 +223,11 @@ describe('defineI18n', () => {
 
   describe('setLocale', () => {
     it('loads messages before the locale becomes observable', async () => {
-      const { wrapper, i18n } = await render({ messages, locale: 'en', template: t => t('welcome') })
+      const { wrapper, i18n } = await render({
+        messages,
+        locale: 'en',
+        template: t => t('welcome'),
+      })
 
       const pending = i18n.setLocale('fr')
       expect(wrapper.text()).toBe('Welcome !')

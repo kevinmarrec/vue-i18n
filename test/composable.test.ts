@@ -187,7 +187,9 @@ describe('composable', () => {
   it('should throw error when plugin has not been installed', () => {
     vi.spyOn(console, 'warn').mockImplementation(() => {})
 
-    expect(() => mount(defineComponent({ setup: () => useI18n() })))
+    expect(() => mount(defineComponent({
+      setup: () => useI18n(),
+    })))
       .toThrow('Plugin has not been installed')
   })
 })
