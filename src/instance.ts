@@ -32,8 +32,11 @@ export async function createInstance(options: ResolvedOptions): Promise<VueI18nI
   const loadMessages = async (locale: string) => {
     const source = options.messages[locale]
 
-    if (source)
-      messages.value[locale] = typeof source === 'function' ? (await source() as any).default : source
+    if (source) {
+      messages.value[locale] = typeof source === 'function'
+        ? (await source() as any).default
+        : source
+    }
   }
 
   const findLocaleMessage = (locale: string, key: string) =>
@@ -44,7 +47,9 @@ export async function createInstance(options: ResolvedOptions): Promise<VueI18nI
 
   // Both are awaited: a fallback loading in the background would let a render resolve a key the
   // next one resolves differently.
-  await Promise.all([...new Set([options.locale, options.fallbackLocale])].map(loadMessages))
+  await Promise.all([
+    ...new Set([options.locale, options.fallbackLocale]),
+  ].map(loadMessages))
 
   return {
     locale: readonly(locale),
@@ -71,9 +76,13 @@ export async function createInstance(options: ResolvedOptions): Promise<VueI18nI
       if (message.includes('|')) {
         const count = [values.count, values.n].find(x => typeof x === 'number') ?? 1
         // Clamped between 0 and 2. Only exactly 1 is singular, so a fractional count is plural.
-        const clamped = Number.isInteger(count) ? Math.min(Math.abs(count), 2) : 2
+        const clamped = Number.isInteger(count)
+          ? Math.min(Math.abs(count), 2)
+          : 2
         const parts = message.split(PLURAL_SEPARATOR_RE)
-        const rules = parts.length > 2 ? [0, 1, 2] : [1, 0, 1] // (no apple | one apple | many apples) VS (car | cars)
+        const rules = parts.length > 2
+          ? [0, 1, 2]
+          : [1, 0, 1] // (no apple | one apple | many apples) VS (car | cars)
         message = parts[rules[clamped]]
       }
 

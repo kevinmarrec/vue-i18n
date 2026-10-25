@@ -34,10 +34,14 @@ export function defineI18n(options: DefineI18nOptions = {}): I18n {
     localizePath: (pathname, locale) => {
       if (locale === defaultLocale) return pathname
 
-      return `/${locale}${trailingSlash ? pathname : pathname.replace(ROOT_RE, '')}`
+      return `/${locale}${trailingSlash
+        ? pathname
+        : pathname.replace(ROOT_RE, '')}`
     },
     detectLocale: () => {
-      const preferred = navigator.languages?.length ? navigator.languages : [navigator.language]
+      const preferred = navigator.languages?.length
+        ? navigator.languages
+        : [navigator.language]
 
       // Each tag is tried in full (`fr-CA`) before its language subtag (`fr`), in preference order.
       const candidates = preferred.flatMap(tag => [tag, tag.split('-')[0]])
